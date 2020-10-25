@@ -15,7 +15,12 @@
 ### Tasks
 - [] Find bootstrap template
 - [x] Find API for currency
-- [] Find API for news
+- [x] Find API for news
 - [] Create a functionality template, write functions in pseudo code, know what the functions should be before coding
 - [] Plan out the design with wireframes
 - [] Find out if a DB is necessary (I don't think it will be necessary since information won't be saved)
+
+
+### API
+- For currency = https://exchangerate.host/#/docs
+- For news = https://newsapi.org/docs/client-libraries/node-js
