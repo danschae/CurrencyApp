@@ -38,7 +38,14 @@ const LoginForm = props => {
   };
 
   const submitLogin = () => {
-    console.log("logged in")
+    if (login.email === "") {
+      return setLogin({...login, errorType: "email", errorMessage: "Please write your email"})
+    }
+    if (login.password === "") {
+      return setLogin({...login, errorType: "password", errorMessage: "Please write your password"})
+    }
+
+    // axios request from server will go here
     handleClose();
   }
 
@@ -61,9 +68,19 @@ const LoginForm = props => {
             event.preventDefault()
             submitLogin();
           }}>
-          <input type='email' placeholder='youremail@email.com'/>
-          <input type='password'/>
+          <input 
+          type='email' 
+          placeholder='youremail@email.com'
+          value={login.email}
+          onChange={event => setLogin({...login, email: event.target.value})}
+          />
+          <input 
+          type='password'
+          value={login.password}
+          onChange={event => setLogin({...login, password: event.target.value})}
+          />
           <Button color="primary" onClick={submitLogin}>Log in</Button>
+        {login.errorType && <div>{login.errorMessage}</div>}
           </form>
         </Fade>
       </Modal>
