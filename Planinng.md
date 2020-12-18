@@ -53,3 +53,7 @@
 - UseFavouritesData
 - UseCurrencyData
 - UseNewsData
+
+## Things to consider?
+- Should I use context? 
+- Should I use bootstrap or just design it myself?
