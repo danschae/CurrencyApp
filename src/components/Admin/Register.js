@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -38,7 +39,18 @@ const RegForm = props => {
   };
 
   const submitRegister = () => {
-    console.log("registered!")
+    if (register.username === "") {
+      console.log("working?")
+      return setRegister({...register, errorType: "username", errorMessage: "Please write your username"})
+    }
+    if (register.email === "") {
+      return setRegister({...register, errorType: "email", errorMessage: "Please write your email"})
+    }
+    if (register.password === "") {
+      return setRegister({...register, errorType: "password", errorMessage: "Please write your password"})
+    }
+
+    // axios request from server will go here
     handleClose();
   }
 
@@ -61,10 +73,25 @@ const RegForm = props => {
             event.preventDefault()
             submitRegister();
           }}>
-          <input type='username' placeholder='your username'/>
-          <input type='email' placeholder='youremail@email.com'/>
-          <input type='password'/>
+          <input 
+          type='username' 
+          placeholder='yourusername' 
+          value={register.username}
+          onChange={event => setRegister({...register, username: event.target.value})}
+          />
+          <input 
+          type='email' 
+          placeholder='youremail@email.com'
+          value={register.email}
+          onChange={event => setRegister({...register, email: event.target.value})}
+          />
+          <input 
+          type='password'
+          value={register.password}
+          onChange={event => setRegister({...register, password: event.target.value})}
+          />
           <Button color="primary" onClick={submitRegister}>Log in</Button>
+        {register.errorType && <div>{register.errorMessage}</div>}
           </form>
         </Fade>
       </Modal>
