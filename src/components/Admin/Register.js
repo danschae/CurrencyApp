@@ -14,6 +14,11 @@ const regData = {
   errorType: ''
 };
 
+const errStatus = {
+  message: '',
+  status: false
+}
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -31,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RegForm = props => {
   const [register, setRegister] = useState(regData);
+  const [error, setError] = useState(errStatus);
   const classes = useStyles();
 
 
@@ -38,7 +44,7 @@ const RegForm = props => {
     props.setModal({...props.modal, regOpen: false})
   };
 
-  const submitRegister = () => {
+  const validate = () => {
     if (register.username === "") {
       console.log("working?")
       return setRegister({...register, errorType: "username", errorMessage: "Please write your username"})
@@ -49,9 +55,24 @@ const RegForm = props => {
     if (register.password === "") {
       return setRegister({...register, errorType: "password", errorMessage: "Please write your password"})
     }
+    return true
+  }
 
-    // axios request from server will go here
-    handleClose();
+  const submitRegister = () => {
+    if (validate(register)) {
+      axios.post("api/users/register", {username: register.username, email: register.email, password: register.password})
+        .then(response => {
+          if (response.data === "username already exists") {
+            return setRegister({...register, errorType: "username", errorMessage: response.data})
+          }
+          if (response.data === "email already exists") {
+            return setRegister({...register, errorType: "password", errorMessage: response.data})
+          }
+          console.log(response)
+          handleClose();
+        })
+        .catch(err => console.log(err))
+    }
   }
 
   return (
@@ -92,6 +113,7 @@ const RegForm = props => {
           />
           <Button color="primary" onClick={submitRegister}>Log in</Button>
         {register.errorType && <div>{register.errorMessage}</div>}
+        {error.status && <div>{error.message}</div>}
           </form>
         </Fade>
       </Modal>
