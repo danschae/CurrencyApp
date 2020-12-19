@@ -53,8 +53,16 @@ const LoginForm = props => {
     if (validate(login)) {
       axios.post("api/users/login",{email: login.email, password: login.password})
         .then(response => {
+          if (response.data === "invalid email") {
+            return setLogin({...login, errorType: "email", errorMessage: response.data})
+          }
+          if (response.data === "invalid password") {
+            return setLogin({...login, errorType: "password", errorMessage: response.data})
+          }
           console.log(response.data)
+          handleClose();
         })
+        .catch(err => console.log(err))
     }
   }
 

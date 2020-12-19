@@ -66,7 +66,7 @@ const RegForm = props => {
             return setRegister({...register, errorType: "username", errorMessage: response.data})
           }
           if (response.data === "email already exists") {
-            return setRegister({...register, errorType: "password", errorMessage: response.data})
+            return setRegister({...register, errorType: "email", errorMessage: response.data})
           }
           console.log(response)
           handleClose();
@@ -111,7 +111,7 @@ const RegForm = props => {
           value={register.password}
           onChange={event => setRegister({...register, password: event.target.value})}
           />
-          <Button color="primary" onClick={submitRegister}>Log in</Button>
+          <Button color="primary" onClick={submitRegister}>Register</Button>
         {register.errorType && <div>{register.errorMessage}</div>}
         {error.status && <div>{error.message}</div>}
           </form>
