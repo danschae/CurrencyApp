@@ -1,9 +1,11 @@
 import {useState} from 'react';
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
+import Axios from 'axios';
 
 
 const loginData = {
@@ -37,16 +39,23 @@ const LoginForm = props => {
     props.setModal({...props.modal, loginOpen: false})
   };
 
-  const submitLogin = () => {
+  const validate = (login) => {
     if (login.email === "") {
       return setLogin({...login, errorType: "email", errorMessage: "Please write your email"})
     }
     if (login.password === "") {
       return setLogin({...login, errorType: "password", errorMessage: "Please write your password"})
     }
+    return true;
+  }
 
-    // axios request from server will go here
-    handleClose();
+  const submitLogin = () => {
+    if (validate(login)) {
+      axios.post("api/users/login",{email: login.email, password: login.password})
+        .then(response => {
+          console.log(response.data)
+        })
+    }
   }
 
   return (
